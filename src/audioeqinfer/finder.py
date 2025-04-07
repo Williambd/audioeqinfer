@@ -78,6 +78,13 @@ class EQ_finder:
     def find_eq_MH(self, sample, n_audio_chunks, burn_in = 10, keep_each = 1, std_dev = 0.01, chunk_duration=0.02):
         '''
         Estimate EQ parameters using a Metropolis-Hastings algorithm across random audio chunks.
+        This method is recommended for its efficiency and accuracy.
+        sample: path to the audio file
+        n_audio_chunks: number of audio chunks to process
+        burn_in: number of initial samples to discard
+        keep_each: number of samples to keep for averaging
+        std_dev: standard deviation for proposal distribution
+        chunk_duration: duration of each chunk in seconds
         '''
         pfunk = ParameterFunction()
         sum_theta = np.zeros(self.n_coefficients)
@@ -156,5 +163,7 @@ class EQ_finder:
         return together
     
     def sample_theta(self,n):
-        '''Sample theta values uniformly in [0,1]'''
+        '''Sample theta values uniformly in [0,1]
+        n: number of samples
+        '''
         return np.random.uniform(0,1,(n,self.n_coefficients))

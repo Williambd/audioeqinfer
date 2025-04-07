@@ -8,7 +8,15 @@ import numpy as np
 from pedalboard.io import AudioFile
 
 class f_X():
+    '''
+    This class implements a flow model for the representation of audio signals.
+    It uses a normal distribution as the base distribution and a series of masked affine autoregressive transforms to model the data.
+    '''
     def __init__(self, sr=44100, chunk_duration=0.02):
+        '''
+        sr: sample rate of the audio signal
+        chunk_duration: duration of each chunk in seconds
+        '''
         features = int((sr*chunk_duration)//2) + 1 #because we have 44100 samples per second, and 20 milliseconds of audio, rrft size is (n/2+1)
         self.base_dist = distributions.StandardNormal(shape=[features])
         self.transforms = []

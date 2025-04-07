@@ -35,6 +35,8 @@ def fft_diagram(array, samplerate,**kwargs):
     '''
     This function computes the FFT of the audio signal and plots the spectrum
     file: audio signal (Make this short, computation is expensiver for longer signals)
+    samplerate: sample rate of the audio signal
+    **kwargs: keyword arguments for marplotlib
     '''
 
     fft_result = np.fft.rfft(array)
@@ -53,6 +55,10 @@ def fft_diagram(array, samplerate,**kwargs):
 
 
 def show_audio_with_controls(file_path):
+    '''
+    Displays an audio file in a Jupyter notebook with controls.
+    file_path: path to the audio file
+    '''
     timestamp = int(time.time() * 1000)  # This is just a trick to ensure the jupyter reloads the audio file
     print(file_path)
     display(HTML(f"<audio controls><source src='{file_path}?t={timestamp}' type='audio/mpeg'></audio>"))
