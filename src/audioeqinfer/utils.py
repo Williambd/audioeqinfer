@@ -2,11 +2,8 @@ from IPython.display import display, HTML
 from scipy import stats
 import numpy as np
 import time
-import scipy
 import matplotlib.pyplot as plt
-import statsmodels.api as sm
 from pedalboard.io import AudioFile
-from patsy import dmatrix,bs,build_design_matrices
 
 
 def EQ_FILE(input_file, output_file, g, samplerate = 44100):
@@ -59,30 +56,3 @@ def show_audio_with_controls(file_path):
     timestamp = int(time.time() * 1000)  # This is just a trick to ensure the jupyter reloads the audio file
     print(file_path)
     display(HTML(f"<audio controls><source src='{file_path}?t={timestamp}' type='audio/mpeg'></audio>"))
-
-class SoundGenerator(object):
-    """
-    SoundGenerator class
-    This class generates a sound signal from an arbitrary distribution
-    Using rejection sampling
-    """
-    def __init__(self, func):
-        self.function = func
-
-    def RejectionSample(self, n, proposal = stats.uniform(0, 1), M = 1):
-        """
-        Rejection sampling algorithm
-        n: number of samples
-        proposal: proposal distribution (if not specified, normal distribution is used)
-        M: constant such that f(x) <= M * g(x) for all x
-        """
-        samples = []
-        while len(samples) < n:
-            x = proposal.rvs()
-            u = np.random.uniform(0, 1)
-            if u < self.function(x) / (M * proposal.pdf(x)):
-                samples.append(x)
-        return samples
-    
-    def run(self, n, *args, **kwargs):
-        return self.RejectionSample(n, *args, **kwargs)

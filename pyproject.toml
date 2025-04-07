@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "audioeqinfer"
+version = "0.1.0"
+
+authors = [
+    {name = "Liam Deaton", email = "williambradydeaton@gmail.com"},
+]
+
+description = "Probabilistic Equalization Discovery for Audio Signals"
+
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["Audio Equalizer", "Equalizer Inference"]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "requests",
+    'importlib-metadata; python_version<"3.10"',
+    "numpy",
+    "scipy",
+    "torch",        
+    "nflows",
+    "patsy",
+    "pedalboard",
+    "statsmodels",
+    "matplotlib",
+]
+
+
+[project.urls]
+Home = "https://github.com/Williambd/audioeqinfer"
+

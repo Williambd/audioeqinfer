@@ -9,7 +9,7 @@ from pedalboard.io import AudioFile
 
 class f_X():
     def __init__(self, sr=44100, chunk_duration=0.02):
-        features = (sr*chunk_duration)//2 +1 #because we have 44100 samples per second, and 20 milliseconds of audio, rrft size is (n/2+1)
+        features = int((sr*chunk_duration)//2) + 1 #because we have 44100 samples per second, and 20 milliseconds of audio, rrft size is (n/2+1)
         self.base_dist = distributions.StandardNormal(shape=[features])
         self.transforms = []
         for _ in range(3):

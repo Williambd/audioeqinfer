@@ -19,7 +19,7 @@ class EQ_finder:
         Estimate EQ parameters via importance sampling across multiple audio chunks.
         This method is not recommended.
         '''
-        pfunk = ParameterFunction()
+        pfunk = ParameterFunction(n_coefficients=self.n_coefficients)
         running_sum_log_numerator = np.full(self.n_coefficients, -np.inf)  # log(0) = -inf
         running_sum_log_denominator = -np.inf
         sr = None
