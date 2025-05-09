@@ -7,12 +7,13 @@ from scipy.special import logsumexp
 import numpy as np
 from pedalboard.io import AudioFile
 
+
 class f_X():
     '''
     This class implements a flow model for the representation of audio signals.
     It uses a normal distribution as the base distribution and a series of masked affine autoregressive transforms to model the data.
     '''
-    def __init__(self, sr=44100, chunk_duration=0.02):
+    def __init__(self, sr:int=44100, chunk_duration:float=0.02):
         '''
         sr: sample rate of the audio signal
         chunk_duration: duration of each chunk in seconds
@@ -29,19 +30,19 @@ class f_X():
     # def __call__(self,a):
     #     return self.flow.log_prob(a) #returns our pdf evaluations
 
-    def log_pdf(self, x):
+    def log_pdf(self, x:np.ndarray) -> np.ndarray:
         '''Returns the log pdf of the input x'''
         return self.flow.log_prob(x)
 
-    def sample(self):
+    def sample(self) -> np.ndarray:
         '''Samples from the representation'''
         return self.flow.sample(1)
     
-    def sample_n(self, n):
+    def sample_n(self, n:int)-> np.ndarray:
         '''Samples n samples from the representation'''
         return self.flow.sample(n)
     
-    def audio_process(self, underlying_signal_file, chunk_duration = 0.02, process_block_duration = 5.0): #this function processes audio chunks
+    def audio_process(self, underlying_signal_file:str, chunk_duration:float = 0.02, process_block_duration:float = 5.0) -> None: #this function processes audio chunks
         '''
         Online processing of audio chunks for the flow model.
         Automatically trains the flow model on the chunks.
@@ -69,7 +70,7 @@ class f_X():
                 X = np.stack(X)
                 self.train(X)
     
-    def train(self, x, n_iterations=1, verbose=False): #This is a very simple training loop
+    def train(self, x, n_iterations:int=1, verbose=False) -> None: #This is a very simple training loop
         if len(x.shape) == 1:
         # If input is flat, reshape to (1, features)
             x = x.reshape(1, -1)

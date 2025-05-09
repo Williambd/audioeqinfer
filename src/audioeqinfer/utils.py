@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from pedalboard.io import AudioFile
 
 
-def EQ_FILE(input_file, output_file, g, samplerate = 44100):
+def EQ_FILE(input_file:str, output_file:str, g, samplerate = 44100):
   '''
   Imports an audio file, applies the EQ function g to it, and writes the result to a new file.
     input_file: path to the input audio file
@@ -31,9 +31,9 @@ def EQ_FILE(input_file, output_file, g, samplerate = 44100):
           o.write(newsignal)
           #wow. this is so cool. wowowowow.
 
-def fft_diagram(array, samplerate,**kwargs):
+def fft_diagram(array:np.ndarray, samplerate:float,**kwargs) -> None:
     '''
-    This function computes the FFT of the audio signal and plots the spectrum
+    This function computes the FFT of the audio signal and plots the spectrum for notebook users.
     file: audio signal (Make this short, computation is expensiver for longer signals)
     samplerate: sample rate of the audio signal
     **kwargs: keyword arguments for marplotlib
@@ -54,7 +54,7 @@ def fft_diagram(array, samplerate,**kwargs):
     #return magnitude, freq
 
 
-def show_audio_with_controls(file_path):
+def show_audio_with_controls(file_path:str):
     '''
     Displays an audio file in a Jupyter notebook with controls.
     file_path: path to the audio file

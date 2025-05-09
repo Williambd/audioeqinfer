@@ -5,19 +5,24 @@ from pedalboard.io import AudioFile
 from patsy import build_design_matrices
 
 class EQ_finder:
-    def __init__(self, f_X, n_coefficients):
+    def __init__(self, f_X, n_coefficients:int):
         '''
-        f_X: Trained model approximating the distribution of audio chunks pretransformation
+        f_X: Trained model approximating the distribution of audio chunks pretransformation. Must have a logprob method.
         n_coefficients: Number of coefficients for the basis spline representing EQ curve
         '''
         self.f_X = f_X
         self.n_coefficients = n_coefficients
 
 
-    def find_eq_importance(self, sample, n_thetas_per_batch, n_audio_chunks, chunk_duration=0.02):
+    def find_eq_importance(self, sample:str, n_thetas_per_batch:int, n_audio_chunks:int, chunk_duration:float=0.02) -> np.ndarray:
         '''
         Estimate EQ parameters via importance sampling across multiple audio chunks.
-        This method is not recommended.
+        sample: path to the audio file
+        n_thetas_per_batch: number of theta samples to draw for each audio chunk
+        n_audio_chunks: number of audio chunks to process
+        chunk_duration: duration of each chunk in seconds
+
+        Note: this method is not recommended for high dimensional theta spaces.
         '''
         pfunk = ParameterFunction(n_coefficients=self.n_coefficients)
         running_sum_log_numerator = np.full(self.n_coefficients, -np.inf)  # log(0) = -inf
@@ -75,10 +80,11 @@ class EQ_finder:
 
         return average_theta
 
-    def find_eq_MH(self, sample, n_audio_chunks, burn_in = 10, keep_each = 1, std_dev = 0.01, chunk_duration=0.02):
+    def find_eq_MH(self, sample:str, n_audio_chunks:int, burn_in:int = 10, keep_each:int = 1, std_dev:float = 0.01, chunk_duration:float =0.02) -> np.ndarray:
         '''
         Estimate EQ parameters using a Metropolis-Hastings algorithm across random audio chunks.
         This method is recommended for its efficiency and accuracy.
+
         sample: path to the audio file
         n_audio_chunks: number of audio chunks to process
         burn_in: number of initial samples to discard
@@ -154,7 +160,7 @@ class EQ_finder:
                 print(f"Processed {n + 1}/{n_audio_chunks}", end="\r")
             return sum_theta / ((n_audio_chunks) / keep_each)
 
-    def fft_chunk(self, chunk, samplerate):
+    def fft_chunk(self, chunk:np.ndarray, samplerate:float) -> np.ndarray:
         '''Compute FFT of an audio chunk'''
         fft_result = np.fft.rfft(chunk)
         freq = np.fft.rfftfreq(chunk.size, d=1./samplerate)
@@ -162,7 +168,7 @@ class EQ_finder:
         together = np.array(list(zip(freq,magnitude)))
         return together
     
-    def sample_theta(self,n):
+    def sample_theta(self,n:int) -> np.ndarray:
         '''Sample theta values uniformly in [0,1]
         n: number of samples
         '''
